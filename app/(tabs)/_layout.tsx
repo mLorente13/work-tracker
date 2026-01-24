@@ -1,10 +1,12 @@
 import { Tabs } from "expo-router";
 import React from "react";
 
+import { FabTabButton } from "@/components/FabTabButton";
 import { HapticTab } from "@/components/haptic-tab";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
+import { Cog, Plus } from "lucide-react-native";
 import { useAuth } from "../context/AuthContext";
 
 export default function TabLayout() {
@@ -18,6 +20,7 @@ export default function TabLayout() {
         tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
         headerShown: false,
         tabBarButton: HapticTab,
+        tabBarShowLabel: false,
       }}
     >
       <Tabs.Protected guard={isLoggedIn}>
@@ -31,12 +34,18 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
-          name="explore"
+          name="workday"
           options={{
-            title: "Explore",
-            tabBarIcon: ({ color }) => (
-              <IconSymbol size={28} name="paperplane.fill" color={color} />
-            ),
+            title: "Jornada",
+            tabBarButton: FabTabButton,
+            tabBarIcon: () => <Plus size={28} color={"white"} />,
+          }}
+        />
+        <Tabs.Screen
+          name="settings"
+          options={{
+            title: "Ajustes",
+            tabBarIcon: ({ color }) => <Cog size={28} color={color} />,
           }}
         />
       </Tabs.Protected>

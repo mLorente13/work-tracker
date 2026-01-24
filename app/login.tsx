@@ -17,7 +17,6 @@ export default function Login() {
       email: email,
       password: password,
     });
-    console.log(response);
     if (response.error) Alert.alert(response.error.message);
     setLoading(false);
   }
@@ -53,8 +52,8 @@ export default function Login() {
           {loading ? <LoaderCircle size={24} color="white" /> : "Login"}
         </Text>
       </Pressable>
-      <View>
-        <Text className="mt-4 text-red-500">Dont have an account?</Text>
+      <View className="w-full flex items-center">
+        <Text className="mt-4">Don&apos;t have an account?</Text>
         <Link href="/signup">
           <Text className="mt-2 text-blue-500">Sign Up</Text>
         </Link>
