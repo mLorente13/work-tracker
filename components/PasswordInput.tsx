@@ -10,7 +10,6 @@ interface PasswordInputProps {
 }
 
 export default function PasswordInput({
-  password,
   setPassword,
   visible,
   setVisible,
@@ -19,7 +18,6 @@ export default function PasswordInput({
   return (
     <View className="w-full relative">
       <TextInput
-        value={password}
         onChangeText={(text) => setPassword(text)}
         secureTextEntry={!visible}
         placeholder={placeholder || "Password"}
