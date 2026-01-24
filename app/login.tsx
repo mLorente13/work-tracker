@@ -1,5 +1,4 @@
-import { Link } from "expo-router";
-import { LoaderCircle } from "lucide-react-native";
+import { Link, useRouter } from "expo-router";
 import { useState } from "react";
 import { Alert, Pressable, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -11,13 +10,18 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
+  const router = useRouter();
   async function signInWithEmail() {
     setLoading(true);
-    const response = await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithPassword({
       email: email,
       password: password,
     });
-    if (response.error) Alert.alert(response.error.message);
+    if (error) {
+      Alert.alert(error.message);
+    } else {
+      router.navigate("/");
+    }
     setLoading(false);
   }
 
@@ -39,6 +43,7 @@ export default function Login() {
         />
       </View>
       <Pressable
+        disabled={loading}
         className="mt-4 w-3/4 rounded bg-blue-500 px-4 py-2"
         onPress={(e) => {
           setLoading(true);
@@ -46,11 +51,7 @@ export default function Login() {
           signInWithEmail();
         }}
       >
-        <Text
-          className={`text-center text-white ${loading ? "animation-spin duration-500" : ""}`}
-        >
-          {loading ? <LoaderCircle size={24} color="white" /> : "Login"}
-        </Text>
+        <Text className={`text-center text-white`}>Login</Text>
       </Pressable>
       <View className="w-full flex items-center">
         <Text className="mt-4">Don&apos;t have an account?</Text>
