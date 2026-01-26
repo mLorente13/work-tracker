@@ -19,14 +19,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function TabTwoScreen() {
   const { signOut } = useAuth();
   const {
+    weekdays,
+    setWeekdays,
     breakTime,
     setBreakTime,
     workdayStartTime,
     setWorkdayStartTime,
     notificationsEnabled,
     setNotificationsEnabled,
-    weekdays,
-    setWeekdays,
     loading,
     updating,
     saveProfile,
@@ -56,6 +56,14 @@ export default function TabTwoScreen() {
     }
   };
 
+  if (loading) {
+    return (
+      <SafeAreaView className="flex-1 justify-center items-center">
+        <Text>Cargando configuración...</Text>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView className="w-10/12 mx-auto flex-1">
       <Text className="mb-4 text-2xl font-bold">Ajustes</Text>
@@ -67,8 +75,8 @@ export default function TabTwoScreen() {
           <TextInput
             className="mt-2 rounded border border-gray-300 px-3 py-2 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
             keyboardType="numeric"
-            value={breakTime.toString()}
-            onChangeText={(text) => setBreakTime(Number(text) || 0)}
+            value={breakTime?.toString() || "0"}
+            onChangeText={(text) => setBreakTime(Number(text))}
             editable={!updating}
           />
         </View>

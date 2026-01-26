@@ -5,11 +5,9 @@ import { Pressable, Text, View } from "react-native";
 export default function WeekDaysSelector({
   weekdays,
   setWeekdays,
-  userId,
 }: {
   weekdays: WeekDay[];
   setWeekdays: (days: WeekDay[]) => void;
-  userId?: string | null;
 }) {
   const [selectedDays, setSelectedDays] = useState<number[]>([]);
 
@@ -23,7 +21,6 @@ export default function WeekDaysSelector({
       setWeekdays([...weekdays, { id: dayValue, name: "" }]);
     }
   };
-
   const daysOfWeek = [
     { id: 2, name: "Lunes" },
     { id: 3, name: "Martes" },
@@ -44,7 +41,7 @@ export default function WeekDaysSelector({
         >
           <Text
             className={
-              selectedDays.includes(day.id)
+              weekdays.some((d) => d.id === day.id)
                 ? "text-white"
                 : "text-black dark:text-white"
             }

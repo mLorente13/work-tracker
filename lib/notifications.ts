@@ -14,7 +14,6 @@ Notifications.setNotificationHandler({
 
 export async function requestPermissions(): Promise<boolean> {
   if (!Device.isDevice) {
-    console.log("Push notifications require a physical device");
     return false;
   }
   const { status: existingStatus } = await Notifications.getPermissionsAsync();

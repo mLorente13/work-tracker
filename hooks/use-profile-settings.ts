@@ -19,7 +19,6 @@ interface ProfileSettings {
 export function useProfileSettings() {
   const { session } = useAuth();
   const userId = session?.user?.id;
-
   const [breakTime, setBreakTime] = useState(0);
   const [workdayStartTime, setWorkdayStartTime] = useState(new Date());
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
@@ -29,21 +28,23 @@ export function useProfileSettings() {
 
   useEffect(() => {
     if (!userId) return;
-
+    setLoading(true);
     async function fetchProfile() {
       setLoading(true);
       const { data, error } = await supabase
         .from("profiles")
-        .select("*")
+        .select("*, weekday_profile(weekday:weekday_id(id, name))")
         .eq("id", userId)
         .single();
-
       if (error) {
         console.error("Error fetching profile:", error);
       } else {
-        setBreakTime(data.break_time || 0);
-        setNotificationsEnabled(data.notifications_enabled || false);
-        setWeekdays(data.weekdays || []);
+        setNotificationsEnabled(data.notifications_enabled);
+        setWeekdays(
+          data.weekday_profile.map((wp: any) => wp.weekday) as WeekDay[],
+        );
+        setBreakTime(data.break_time);
+        setNotificationsEnabled(data.notifications_enabled);
         if (data.workday_start_time) {
           const [h, m] = data.workday_start_time.split(":").map(Number);
           const date = new Date();
@@ -68,13 +69,12 @@ export function useProfileSettings() {
       console.error("Error clearing existing workdays:", error);
       return;
     }
-    console.log("Fetched weekdays:", weekdays);
     const inserts = weekdays.map((day) => ({
       profile_id: userId,
       weekday_id: day.id,
     }));
+    if (inserts.length === 0) return;
 
-    console.log(userId, inserts);
     const { error: insertError } = await supabase
       .from("weekday_profile")
       .insert(inserts);
@@ -118,14 +118,14 @@ export function useProfileSettings() {
 
   return {
     // State
+    weekdays,
+    setWeekdays,
     breakTime,
     setBreakTime,
     workdayStartTime,
     setWorkdayStartTime,
     notificationsEnabled,
     setNotificationsEnabled,
-    weekdays,
-    setWeekdays,
     // Status
     loading,
     updating,

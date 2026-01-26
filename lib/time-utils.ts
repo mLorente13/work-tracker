@@ -4,11 +4,12 @@ export function calcWorkTime(
   breakTimeMinutes: number,
 ): number {
   if (!startTime || !endTime) return 0;
+  if (endTime <= startTime) return 0;
   const totalSeconds = Math.round(
     (endTime.getTime() - startTime.getTime()) / 1000,
   );
-  const breakSeconds = breakTimeMinutes * 60;
-  return Math.max(0, totalSeconds - breakSeconds);
+  const breakTimeInSeconds = breakTimeMinutes * 60;
+  return Math.max(0, totalSeconds - Math.max(0, breakTimeInSeconds));
 }
 
 export function calcRestTime(
@@ -29,5 +30,11 @@ export function calcRestTime(
 export function formatSecondsToHM(totalSeconds: number): string {
   const hours = Math.floor(totalSeconds / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
+  return `${hours}h ${minutes}m`;
+}
+
+export function formatMinutesToHM(totalMinutes: number): string {
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
   return `${hours}h ${minutes}m`;
 }
