@@ -9,7 +9,6 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [visible, setVisible] = useState(false);
   const router = useRouter();
   async function signInWithEmail() {
     setLoading(true);
@@ -20,6 +19,8 @@ export default function Login() {
     if (error) {
       Alert.alert(error.message);
     } else {
+      setEmail("");
+      setPassword("");
       router.navigate("/");
     }
     setLoading(false);
@@ -34,13 +35,9 @@ export default function Login() {
           placeholder="Email"
           placeholderTextColor="#888"
           onChangeText={(text) => setEmail(text)}
+          value={email}
         />
-        <PasswordInput
-          password={password}
-          setPassword={setPassword}
-          visible={visible}
-          setVisible={setVisible}
-        />
+        <PasswordInput password={password} setPassword={setPassword} />
       </View>
       <Pressable
         disabled={loading}

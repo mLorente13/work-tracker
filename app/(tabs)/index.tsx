@@ -4,6 +4,7 @@ import { useAuth } from "@/app/context/AuthContext";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { supabase } from "@/lib/supabase";
+import { formatMinutesToHM, formatSecondsToHM } from "@/lib/time-utils";
 import { RefreshCw } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -22,9 +23,11 @@ export default function HomeScreen() {
       if (error) {
         console.error("Error fetching workdays:", error);
       } else {
+        console.log(data);
         setWorkDays(data || []);
-        console.log("Fetched workdays:", data);
       }
+      setRefreshing(false);
+      console.log(refreshing);
     };
     getUserWorkDays();
   }, [session, refreshing]);
@@ -43,11 +46,10 @@ export default function HomeScreen() {
               Date: {item.date}
             </ThemedText>
             <ThemedText>
-              Tiempo de trabajo: {Math.floor(item.work_time / 3600)}h{" "}
-              {Math.floor((item.work_time % 3600) / 60)}m
+              Tiempo de trabajo: {formatSecondsToHM(item.work_time)}
             </ThemedText>
             <ThemedText>
-              Descanso: {Math.floor((item.rest_time % 3600) / 60)}m
+              Descanso: {formatMinutesToHM(item.rest_time)}
             </ThemedText>
           </ThemedView>
         )}

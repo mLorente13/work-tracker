@@ -48,7 +48,6 @@ export default function Workday() {
           ) || 0,
         rest_time: restTime || 0,
       };
-      console.log("Saving workday data:", workDayData);
       const { data, error } = await supabase
         .from("workday")
         .insert(workDayData)
@@ -56,7 +55,6 @@ export default function Workday() {
       if (error) {
         console.error("Error saving workday:", error);
       } else {
-        console.log("Workday saved successfully:", data);
         resetWorkDay();
       }
     };
@@ -72,7 +70,7 @@ export default function Workday() {
         <WorkdayStatusText
           status={workDayStatus.status}
           startTime={workDayStatus.startTime}
-          restTime={workDayStatus.restTime}
+          restTime={workDayStatus.restStartTime}
           endTime={workDayStatus.endTime}
         />
         <ActionBtn

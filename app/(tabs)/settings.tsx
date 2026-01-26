@@ -1,61 +1,134 @@
 import { useAuth } from "@/app/context/AuthContext";
-import { supabase } from "@/lib/supabase";
+import WeekDaysSelector from "@/components/settings/WeekDaysSelector";
+import { useProfileSettings } from "@/hooks/use-profile-settings";
+import { requestPermissions } from "@/lib/notifications";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { LogOut } from "lucide-react-native";
-import { useEffect, useState } from "react";
-import { Pressable, Text, TextInput, View } from "react-native";
+import { useState } from "react";
+import {
+  Alert,
+  Platform,
+  Pressable,
+  Switch,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function TabTwoScreen() {
-  const { session, signOut } = useAuth() as {
-    session: {
-      user: { id: string; user_metadata?: { username?: string } };
-    } | null;
-    signOut: () => void;
-  };
-  const [user, setUser] = useState<any>(null);
+  const { signOut } = useAuth();
+  const {
+    weekdays,
+    setWeekdays,
+    breakTime,
+    setBreakTime,
+    workdayStartTime,
+    setWorkdayStartTime,
+    notificationsEnabled,
+    setNotificationsEnabled,
+    loading,
+    updating,
+    saveProfile,
+  } = useProfileSettings();
+  const [showTimePicker, setShowTimePicker] = useState(Platform.OS === "ios");
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", session?.user.id)
-        .single();
-      if (error) {
-        console.error("Error fetching user data:", error);
-      } else {
-        setUser(data);
+  async function handleNotificationToggle(enabled: boolean) {
+    if (enabled) {
+      const hasPermission = await requestPermissions();
+      if (!hasPermission) {
+        Alert.alert(
+          "Permisos requeridos",
+          "Necesitas habilitar los permisos de notificaciones en la configuración del dispositivo",
+        );
+        return;
       }
-    };
-    fetchUser();
-  }, [session?.user.id]);
+    }
+    setNotificationsEnabled(enabled);
+  }
+
+  const onTimeChange = (_event: any, selectedDate?: Date) => {
+    if (Platform.OS === "android") {
+      setShowTimePicker(false);
+    }
+    if (selectedDate) {
+      setWorkdayStartTime(selectedDate);
+    }
+  };
+
+  if (loading) {
+    return (
+      <SafeAreaView className="flex-1 justify-center items-center">
+        <Text>Cargando configuración...</Text>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView className="w-10/12 mx-auto flex-1">
       <Text className="mb-4 text-2xl font-bold">Ajustes</Text>
-      <View>
-        <Text className="text-lg">Tiempo de descanso configurado:</Text>
-        <TextInput
-          className="mb-4 mt-2 rounded border border-gray-300 px-3 py-2"
-          keyboardType="numeric"
-          value={user?.break_time.toString() || ""}
-          onChangeText={(text) =>
-            setUser({ ...user, break_time: Number(text) })
-          }
-          onEndEditing={async () => {
-            const { data, error } = await supabase
-              .from("profiles")
-              .update({ break_time: user?.break_time })
-              .eq("id", session?.user.id)
-              .select();
-            if (error) {
-              console.error("Error updating break time:", error);
-            } else {
-              console.log("Break time updated successfully:", data);
-            }
-          }}
-        />
+      <View className="gap-4">
+        <View>
+          <Text className="text-lg font-medium">
+            Tiempo de descanso (minutos):
+          </Text>
+          <TextInput
+            className="mt-2 rounded border border-gray-300 px-3 py-2 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+            keyboardType="numeric"
+            value={breakTime?.toString() || "0"}
+            onChangeText={(text) => setBreakTime(Number(text))}
+            editable={!updating}
+          />
+        </View>
+
+        <View className="flex-col flex-wrap justify-between">
+          <View className="flex-row items-center gap-2">
+            <Text className="text-lg font-medium">Notificación diaria:</Text>
+            <Switch
+              value={notificationsEnabled}
+              onValueChange={handleNotificationToggle}
+            />
+          </View>
+          {notificationsEnabled && (
+            <View className="">
+              <Text className="text-lg font-medium">
+                Hora de inicio de jornada:
+              </Text>
+              {Platform.OS === "android" && (
+                <Pressable
+                  className="mt-2 rounded border border-gray-300 px-3 py-3 dark:border-gray-600 dark:bg-gray-800"
+                  onPress={() => setShowTimePicker(true)}
+                >
+                  <Text className="dark:text-white">
+                    {workdayStartTime.getHours().toString().padStart(2, "0")}:
+                    {workdayStartTime.getMinutes().toString().padStart(2, "0")}
+                  </Text>
+                </Pressable>
+              )}
+              {showTimePicker && (
+                <DateTimePicker
+                  mode="time"
+                  value={workdayStartTime}
+                  onChange={onTimeChange}
+                  is24Hour={true}
+                />
+              )}
+              <WeekDaysSelector weekdays={weekdays} setWeekdays={setWeekdays} />
+            </View>
+          )}
+        </View>
+
+        <Pressable
+          className={`mt-4 rounded px-4 py-3 ${updating ? "bg-blue-300" : "bg-blue-500"}`}
+          onPress={saveProfile}
+          disabled={updating}
+        >
+          <Text className="text-center text-white font-medium">
+            {updating ? "Guardando..." : "Guardar configuración"}
+          </Text>
+        </Pressable>
       </View>
+
       <Pressable
         className="absolute bottom-4 w-full rounded-full px-4 py-2 bg-red-500 flex-row items-center justify-center gap-2"
         onPress={signOut}
