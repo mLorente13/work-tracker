@@ -25,6 +25,7 @@ export default function HomeScreen() {
         setWorkDays(data || []);
         console.log("Fetched workdays:", data);
       }
+      setRefreshing(false);
     };
     getUserWorkDays();
   }, [session, refreshing]);
