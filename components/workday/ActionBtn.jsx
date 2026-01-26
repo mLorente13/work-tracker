@@ -29,7 +29,7 @@ export default function ActionBtn({
       case "resting":
         return (
           <Pressable
-            className="mt-4 w-48 rounded bg-blue-500 px-4 py-2"
+            className="mx-auto mt-4 w-48 rounded bg-blue-500 px-4 py-2"
             onPress={endRest}
           >
             <Text className="text-center text-white">Finalizar descanso</Text>

@@ -72,7 +72,7 @@ export default function Workday() {
         <WorkdayStatusText
           status={workDayStatus.status}
           startTime={workDayStatus.startTime}
-          restTime={workDayStatus.restTime}
+          restTime={workDayStatus.restStartTime}
           endTime={workDayStatus.endTime}
         />
         <ActionBtn
