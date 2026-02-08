@@ -1,0 +1,116 @@
+name: publish release
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    name: EAS Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required to create releases and tags
+    steps:
+      - name: Check for EXPO_TOKEN
+        run: |
+          if [ -z "${{ secrets.EXPO_TOKEN }}" ]; then
+            echo "You must provide an EXPO_TOKEN secret linked to this project's Expo account in this repo's secrets. Learn more: https://docs.expo.dev/eas-update/github-actions"
+            exit 1
+          fi
+
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # Fetch all history for proper versioning
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Get version from package.json
+        id: package-version
+        run: |
+          VERSION=$(cat package.json | grep '"version"' | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g' | tr -d '[[:space:]]')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag=v$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Publish EAS Update
+        run: |
+          eas update --auto --non-interactive
+
+      - name: Build Android APK
+        id: build-android
+        run: |
+          echo "Building Android APK..."
+          eas build --platform android --profile production --non-interactive --no-wait
+
+          # Wait for build to complete and get the URL
+          BUILD_ID=$(eas build:list --platform android --limit 1 --json --non-interactive | jq -r '.[0].id')
+          echo "build_id=$BUILD_ID" >> $GITHUB_OUTPUT
+
+          # Wait for build to complete (poll every 60 seconds)
+          while true; do
+            STATUS=$(eas build:view $BUILD_ID --json | jq -r '.status')
+            echo "Build status: $STATUS"
+            
+            if [ "$STATUS" = "finished" ]; then
+              echo "Build completed successfully!"
+              break
+            elif [ "$STATUS" = "errored" ] || [ "$STATUS" = "canceled" ]; then
+              echo "Build failed with status: $STATUS"
+              exit 1
+            fi
+            
+            sleep 60
+          done
+
+          # Get the artifact URL
+          ARTIFACT_URL=$(eas build:view $BUILD_ID --json | jq -r '.artifacts.buildUrl')
+          echo "artifact_url=$ARTIFACT_URL" >> $GITHUB_OUTPUT
+
+      - name: Download APK
+        run: |
+          curl -L -o app-release.apk "${{ steps.build-android.outputs.artifact_url }}"
+          ls -lh app-release.apk
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.package-version.outputs.tag }}
+          release_name: Release ${{ steps.package-version.outputs.tag }}
+          body: |
+            ## Release ${{ steps.package-version.outputs.version }}
+
+            ✅ Published to Expo
+            📱 APK included in release assets
+
+            ### Download:
+            - Android APK: See assets below
+
+            Commit: ${{ github.sha }}
+            Build ID: ${{ steps.build-android.outputs.build_id }}
+          draft: false
+          prerelease: false
+
+      - name: Upload APK to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./app-release.apk
+          asset_name: app-release-${{ steps.package-version.outputs.version }}.apk
+          asset_content_type: application/vnd.android.package-archive

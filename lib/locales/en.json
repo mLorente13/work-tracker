@@ -1,0 +1,70 @@
+{
+  "common": {
+    "login": "Login",
+    "signup": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "username": "Username",
+    "loading": "Loading..."
+  },
+  "tabs": {
+    "home": "Home",
+    "workday": "Workday",
+    "settings": "Settings"
+  },
+  "login": {
+    "title": "Login",
+    "noAccount": "Don't have an account?",
+    "signupLink": "Sign Up"
+  },
+  "signup": {
+    "title": "Sign Up",
+    "hasAccount": "Already have an account?",
+    "loginLink": "Login",
+    "passwordsMismatch": "Passwords do not match!",
+    "checkInbox": "Please check your inbox for email verification!"
+  },
+  "home": {
+    "title": "Your work days",
+    "workTime": "Work time",
+    "restTime": "Rest",
+    "date": "Date"
+  },
+  "workday": {
+    "welcome": "Welcome {{username}}!",
+    "startWorkday": "Start workday",
+    "endWorkday": "End workday",
+    "startRest": "Start rest",
+    "endRest": "End rest",
+    "statusWorking": "Workday in progress since: {{time}}",
+    "statusResting": "Rest in progress since: {{time}}",
+    "statusEnded": "Workday ended at: {{time}}",
+    "statusIdle": "Workday not started"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Customize your app preferences here.",
+    "loadingConfig": "Loading settings...",
+    "signOut": "Sign out",
+    "appearance": "Appearance",
+    "theme": "Theme",
+    "language": "Language",
+    "workGoals": "Work Goals",
+    "dailyTarget": {
+      "label": "Daily Target",
+      "subtitle": "Hours per workday"
+    },
+    "weeklyTarget": {
+      "label": "Weekly Target",
+      "subtitle": "Hours per week"
+    },
+    "notifications": "Notifications",
+    "dailyNotification": "Daily notification",
+    "workdayStartTime": "Workday start time",
+    "saving": "Saving...",
+    "saveConfig": "Save settings",
+    "permissionsRequired": "Permissions required",
+    "permissionsMessage": "You need to enable notification permissions in your device settings"
+  }
+}

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
 
 export default function ActionBtn({
@@ -7,6 +8,8 @@ export default function ActionBtn({
   startRest,
   endRest,
 }) {
+  const { t } = useTranslation();
+
   const renderButton = () => {
     switch (workDayStatus.status) {
       case "working":
@@ -16,13 +19,17 @@ export default function ActionBtn({
               className="mt-4 w-48 rounded bg-yellow-500 px-4 py-2"
               onPress={startRest}
             >
-              <Text className="text-center text-white">Iniciar descanso</Text>
+              <Text className="text-center text-white">
+                {t("workday.startRest")}
+              </Text>
             </Pressable>
             <Pressable
               className="mt-4 w-48 rounded bg-red-500 px-4 py-2"
               onPress={endWorkDay}
             >
-              <Text className="text-center text-white">Finalizar jornada</Text>
+              <Text className="text-center text-white">
+                {t("workday.endWorkday")}
+              </Text>
             </Pressable>
           </View>
         );
@@ -32,7 +39,9 @@ export default function ActionBtn({
             className="mx-auto mt-4 w-48 rounded bg-blue-500 px-4 py-2"
             onPress={endRest}
           >
-            <Text className="text-center text-white">Finalizar descanso</Text>
+            <Text className="text-center text-white">
+              {t("workday.endRest")}
+            </Text>
           </Pressable>
         );
       case "idle":
@@ -41,7 +50,9 @@ export default function ActionBtn({
             className="mt-4 w-48 rounded bg-green-500 px-4 py-2"
             onPress={startWorkDay}
           >
-            <Text className="text-center text-white">Iniciar jornada</Text>
+            <Text className="text-center text-white">
+              {t("workday.startWorkday")}
+            </Text>
           </Pressable>
         );
 

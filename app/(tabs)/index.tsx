@@ -1,15 +1,17 @@
-import { FlatList, Pressable, Text } from "react-native";
+import { FlatList, Pressable, Text, View } from "react-native";
 
 import { useAuth } from "@/app/context/AuthContext";
-import { ThemedText } from "@/components/themed-text";
-import { ThemedView } from "@/components/themed-view";
+import { useTheme } from "@/hooks/use-color-scheme";
 import { supabase } from "@/lib/supabase";
 import { formatMinutesToHM, formatSecondsToHM } from "@/lib/time-utils";
 import { RefreshCw } from "lucide-react-native";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
+  const { t } = useTranslation();
+  const theme = useTheme();
   const { session } = useAuth();
   const [workDays, setWorkDays] = useState<any[]>([]);
   const [refreshing, setRefreshing] = useState(false);
@@ -33,25 +35,27 @@ export default function HomeScreen() {
   }, [session, refreshing]);
 
   return (
-    <SafeAreaView className="flex-1">
+    <SafeAreaView
+      className={`flex-1 ${theme === "dark" ? "bg-black" : "bg-white"}`}
+    >
       <Text className="text-2xl font-bold text-center mt-6 mb-4">
-        Tus jornadas de trabajo
+        {t("home.title")}
       </Text>
       <FlatList
         data={workDays}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <ThemedView className="p-4 border-b border-gray-200">
-            <ThemedText className="text-lg font-semibold">
-              Date: {item.date}
-            </ThemedText>
-            <ThemedText>
-              Tiempo de trabajo: {formatSecondsToHM(item.work_time)}
-            </ThemedText>
-            <ThemedText>
-              Descanso: {formatMinutesToHM(item.rest_time)}
-            </ThemedText>
-          </ThemedView>
+          <View className="p-4 border-b border-gray-200">
+            <Text className="text-lg font-semibold">
+              {t("home.date")}: {item.date}
+            </Text>
+            <Text>
+              {t("home.workTime")}: {formatSecondsToHM(item.work_time)}
+            </Text>
+            <Text>
+              {t("home.restTime")}: {formatMinutesToHM(item.rest_time)}
+            </Text>
+          </View>
         )}
       />
       <Pressable
