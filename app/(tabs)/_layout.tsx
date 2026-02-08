@@ -1,23 +1,24 @@
 import { Tabs } from "expo-router";
 import React from "react";
 
-import { FabTabButton } from "@/components/FabTabButton";
 import { HapticTab } from "@/components/haptic-tab";
 import { IconSymbol } from "@/components/ui/icon-symbol";
-import { Colors } from "@/constants/theme";
-import { useColorScheme } from "@/hooks/use-color-scheme";
-import { Cog, Plus } from "lucide-react-native";
+import { useTheme } from "@/hooks/use-color-scheme";
+import { Colors } from "@/lib/constants/theme";
+import { Clock, Settings } from "lucide-react-native";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "../context/AuthContext";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const { t } = useTranslation();
+  const theme = useTheme();
   const { session } = useAuth();
   const isLoggedIn = !!session;
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+        tabBarActiveTintColor: Colors[theme ?? "light"].tint,
         headerShown: false,
         tabBarButton: HapticTab,
         tabBarShowLabel: false,
@@ -27,7 +28,7 @@ export default function TabLayout() {
         <Tabs.Screen
           name="index"
           options={{
-            title: "Home",
+            title: t("tabs.home"),
             tabBarIcon: ({ color }) => (
               <IconSymbol size={28} name="house.fill" color={color} />
             ),
@@ -36,16 +37,15 @@ export default function TabLayout() {
         <Tabs.Screen
           name="workday"
           options={{
-            title: "Jornada",
-            tabBarButton: FabTabButton,
-            tabBarIcon: () => <Plus size={28} color={"white"} />,
+            title: t("tabs.workday"),
+            tabBarIcon: ({ color }) => <Clock size={28} color={color} />,
           }}
         />
         <Tabs.Screen
           name="settings"
           options={{
-            title: "Ajustes",
-            tabBarIcon: ({ color }) => <Cog size={28} color={color} />,
+            title: t("tabs.settings"),
+            tabBarIcon: ({ color }) => <Settings size={28} color={color} />,
           }}
         />
       </Tabs.Protected>

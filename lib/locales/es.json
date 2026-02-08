@@ -1,0 +1,70 @@
+{
+  "common": {
+    "login": "Iniciar sesión",
+    "signup": "Registrarse",
+    "email": "Email",
+    "password": "Contraseña",
+    "confirmPassword": "Confirmar contraseña",
+    "username": "Nombre de usuario",
+    "loading": "Cargando..."
+  },
+  "tabs": {
+    "home": "Inicio",
+    "workday": "Jornada",
+    "settings": "Ajustes"
+  },
+  "login": {
+    "title": "Iniciar sesión",
+    "noAccount": "¿No tienes una cuenta?",
+    "signupLink": "Regístrate"
+  },
+  "signup": {
+    "title": "Registrarse",
+    "hasAccount": "¿Ya tienes una cuenta?",
+    "loginLink": "Iniciar sesión",
+    "passwordsMismatch": "¡Las contraseñas no coinciden!",
+    "checkInbox": "¡Revisa tu bandeja de entrada para verificar tu email!"
+  },
+  "home": {
+    "title": "Tus jornadas de trabajo",
+    "workTime": "Tiempo de trabajo",
+    "restTime": "Descanso",
+    "date": "Fecha"
+  },
+  "workday": {
+    "welcome": "Bienvenido {{username}}!",
+    "startWorkday": "Iniciar jornada",
+    "endWorkday": "Finalizar jornada",
+    "startRest": "Iniciar descanso",
+    "endRest": "Finalizar descanso",
+    "statusWorking": "Jornada en curso desde: {{time}}",
+    "statusResting": "Descanso en curso desde: {{time}}",
+    "statusEnded": "Jornada finalizada a las: {{time}}",
+    "statusIdle": "Jornada no iniciada"
+  },
+  "settings": {
+    "title": "Ajustes",
+    "subtitle": "Configura tus preferencias de la aplicación aquí.",
+    "loadingConfig": "Cargando configuración...",
+    "signOut": "Cerrar sesión",
+    "appearance": "Apariencia",
+    "theme": "Tema",
+    "language": "Idioma",
+    "workGoals": "Objetivos de trabajo",
+    "dailyTarget": {
+      "label": "Objetivo diario",
+      "subtitle": "Horas por jornada"
+    },
+    "weeklyTarget": {
+      "label": "Objetivo semanal",
+      "subtitle": "Horas por semana"
+    },
+    "notifications": "Notificaciones",
+    "dailyNotification": "Notificación diaria",
+    "workdayStartTime": "Hora de inicio de jornada",
+    "saving": "Guardando...",
+    "saveConfig": "Guardar configuración",
+    "permissionsRequired": "Permisos requeridos",
+    "permissionsMessage": "Necesitas habilitar los permisos de notificaciones en la configuración del dispositivo"
+  }
+}

@@ -5,6 +5,7 @@ import WorkdayStatusText from "@/components/workday/WorkdayStatusText";
 import { supabase } from "@/lib/supabase";
 import { calcRestTime, calcWorkTime } from "@/lib/time-utils";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -61,10 +62,14 @@ export default function Workday() {
     saveWorkDay();
   }, [userBreakTime, resetWorkDay, workDayStatus, session]);
 
+  const { t } = useTranslation();
+
   return (
     <SafeAreaView className="flex-1 items-center justify-center">
       <Text className="text-2xl font-bold">
-        Bienvenido {session?.user?.user_metadata?.username}!
+        {t("workday.welcome", {
+          username: session?.user?.user_metadata?.username,
+        })}
       </Text>
       <View>
         <WorkdayStatusText

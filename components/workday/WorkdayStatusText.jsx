@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 
 export default function WorkDayStatusText({
@@ -6,23 +7,35 @@ export default function WorkDayStatusText({
   endTime,
   restTime,
 }) {
+  const { t } = useTranslation();
+
   const getStatusText = () => {
     switch (status) {
       case "working":
         return (
-          <Text>Jornada en curso desde: {startTime?.toLocaleTimeString()}</Text>
+          <Text>
+            {t("workday.statusWorking", {
+              time: startTime?.toLocaleTimeString(),
+            })}
+          </Text>
         );
       case "resting":
         return (
-          <Text>Descanso en curso desde: {restTime?.toLocaleTimeString()}</Text>
+          <Text>
+            {t("workday.statusResting", {
+              time: restTime?.toLocaleTimeString(),
+            })}
+          </Text>
         );
       case "ended":
         return (
-          <Text>Jornada finalizada a las: {endTime?.toLocaleTimeString()}</Text>
+          <Text>
+            {t("workday.statusEnded", { time: endTime?.toLocaleTimeString() })}
+          </Text>
         );
       case "idle":
       default:
-        return <Text>Jornada no iniciada</Text>;
+        return <Text>{t("workday.statusIdle")}</Text>;
     }
   };
 

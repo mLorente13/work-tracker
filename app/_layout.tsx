@@ -1,16 +1,17 @@
+import "@/lib/i18n";
 import {
   DarkTheme,
   DefaultTheme,
-  ThemeProvider,
+  ThemeProvider as NavigationThemeProvider,
 } from "@react-navigation/native";
 import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
 import "../global.css";
 
-import { useColorScheme } from "@/hooks/use-color-scheme";
 import { useEffect } from "react";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import { ThemeProvider, useThemeContext } from "./context/ThemeContext";
 import { WorkDayProvider } from "./context/WorkDayContext";
 
 SplashScreen.preventAutoHideAsync();
@@ -20,7 +21,7 @@ export const unstable_settings = {
 };
 
 function RootLayoutNav() {
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useThemeContext();
   const { session, loading } = useAuth();
 
   const isLoggedIn = !!session;
@@ -32,7 +33,9 @@ function RootLayoutNav() {
   }, [loading]);
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+    <NavigationThemeProvider
+      value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+    >
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Protected guard={isLoggedIn}>
           <Stack.Screen
@@ -63,16 +66,18 @@ function RootLayoutNav() {
         />
       </Stack>
       <StatusBar style="auto" />
-    </ThemeProvider>
+    </NavigationThemeProvider>
   );
 }
 
 export default function RootLayout() {
   return (
-    <AuthProvider>
-      <WorkDayProvider>
-        <RootLayoutNav />
-      </WorkDayProvider>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <WorkDayProvider>
+          <RootLayoutNav />
+        </WorkDayProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
