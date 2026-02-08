@@ -40,7 +40,8 @@
     "statusWorking": "Jornada en curso desde: {{time}}",
     "statusResting": "Descanso en curso desde: {{time}}",
     "statusEnded": "Jornada finalizada a las: {{time}}",
-    "statusIdle": "Jornada no iniciada"
+    "statusIdle": "Jornada no iniciada",
+    "startDay": "¿Listo para comenzar tu día?"
   },
   "settings": {
     "title": "Ajustes",

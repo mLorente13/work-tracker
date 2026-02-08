@@ -27,6 +27,13 @@ export function calcRestTime(
   return Math.round((endRestTime.getTime() - startRestTime.getTime()) / 1000);
 }
 
+export function getGreeting(): string {
+  const hour = new Date().getHours();
+  if (hour < 12) return "Good morning";
+  if (hour < 17) return "Good afternoon";
+  return "Good evening";
+}
+
 export function formatSecondsToHM(totalSeconds: number): string {
   const hours = Math.floor(totalSeconds / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);

@@ -40,7 +40,8 @@
     "statusWorking": "Workday in progress since: {{time}}",
     "statusResting": "Rest in progress since: {{time}}",
     "statusEnded": "Workday ended at: {{time}}",
-    "statusIdle": "Workday not started"
+    "statusIdle": "Workday not started",
+    "startDay": "Ready to start your day?"
   },
   "settings": {
     "title": "Settings",
