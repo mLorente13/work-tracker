@@ -26,7 +26,8 @@
     "checkInbox": "Please check your inbox for email verification!"
   },
   "home": {
-    "title": "Your work days",
+    "title": "Work history",
+    "subtitle": "{{count}} workdays recorded",
     "workTime": "Work time",
     "restTime": "Rest",
     "date": "Date"
@@ -41,7 +42,19 @@
     "statusResting": "Rest in progress since: {{time}}",
     "statusEnded": "Workday ended at: {{time}}",
     "statusIdle": "Workday not started",
-    "startDay": "Ready to start your day?"
+    "startDay": "Ready to start your day?",
+    "workTime": "Work time",
+    "restTime": "Rest time",
+    "status": {
+      "working": {
+        "title": "Working since {{time}}",
+        "label": "Working"
+      },
+      "resting": {
+        "title": "Resting since {{time}}",
+        "label": "On break"
+      }
+    }
   },
   "settings": {
     "title": "Settings",
@@ -67,5 +80,17 @@
     "saveConfig": "Save settings",
     "permissionsRequired": "Permissions required",
     "permissionsMessage": "You need to enable notification permissions in your device settings"
+  },
+  "bottomSheet": {
+    "title": "Edit Workday",
+    "date": "Date",
+    "notes": {
+      "label": "Notes",
+      "placeholder": "Add notes about this workday..."
+    },
+    "startTime": "Start Time",
+    "endTime": "End Time",
+    "save": "Save Changes",
+    "delete": "Delete Workday"
   }
 }

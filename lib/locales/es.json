@@ -26,7 +26,8 @@
     "checkInbox": "¡Revisa tu bandeja de entrada para verificar tu email!"
   },
   "home": {
-    "title": "Tus jornadas de trabajo",
+    "title": "Historial de jornadas",
+    "subtitle": "{{count}} jornadas registradas",
     "workTime": "Tiempo de trabajo",
     "restTime": "Descanso",
     "date": "Fecha"
@@ -41,7 +42,19 @@
     "statusResting": "Descanso en curso desde: {{time}}",
     "statusEnded": "Jornada finalizada a las: {{time}}",
     "statusIdle": "Jornada no iniciada",
-    "startDay": "¿Listo para comenzar tu día?"
+    "startDay": "¿Listo para comenzar tu día?",
+    "workTime": "Tiempo de trabajo",
+    "restTime": "Tiempo de descanso",
+    "status": {
+      "working": {
+        "title": "Trabajando desde las {{time}}",
+        "label": "Trabajando"
+      },
+      "resting": {
+        "title": "Descansando desde las {{time}}",
+        "label": "Descansando"
+      }
+    }
   },
   "settings": {
     "title": "Ajustes",
@@ -67,5 +80,17 @@
     "saveConfig": "Guardar configuración",
     "permissionsRequired": "Permisos requeridos",
     "permissionsMessage": "Necesitas habilitar los permisos de notificaciones en la configuración del dispositivo"
+  },
+  "bottomSheet": {
+    "title": "Editar Jornada",
+    "date": "Fecha",
+    "notes": {
+      "label": "Notas",
+      "placeholder": "Añade notas sobre esta jornada..."
+    },
+    "startTime": "Hora de inicio",
+    "endTime": "Hora de fin",
+    "save": "Guardar Cambios",
+    "delete": "Eliminar Jornada"
   }
 }

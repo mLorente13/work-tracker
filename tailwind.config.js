@@ -4,12 +4,18 @@ module.exports = {
   content: ["./app/**/*.{js,jsx,ts,tsx}", "./components/**/*.{js,jsx,ts,tsx}"],
   presets: [require("nativewind/preset")],
   theme: {
-    colors: {
-      background: "oklch(0.09 0 0)",
-      foreground: "oklch(0.98 0 0)",
-      border: "oklch(0.25 0 0)",
-      muted: "oklch(0.18 0 0)",
-      "muted-foreground": "oklch(0.65 0 0)",
+    extend: {
+      colors: {
+        background: "oklch(0.09 0 0)",
+        foreground: "oklch(0.98 0 0)",
+        border: "oklch(0.25 0 0)",
+        muted: "oklch(0.18 0 0)",
+        accent: "oklch(0.65 0.18 250)",
+        "muted-foreground": "oklch(0.65 0 0)",
+      },
+      backgroundColor: {
+        accent: "oklch(0.65 0.18 250)",
+      },
     },
   },
   plugins: [],

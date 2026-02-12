@@ -45,10 +45,6 @@ function RootLayoutNav() {
               contentStyle: { flex: 1, height: "100%" },
             }}
           />
-          <Stack.Screen
-            name="modal"
-            options={{ presentation: "modal", title: "Modal" }}
-          />
         </Stack.Protected>
         <Stack.Screen
           name="login"
