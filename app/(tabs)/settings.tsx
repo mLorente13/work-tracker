@@ -1,5 +1,6 @@
 import { useAuth } from "@/app/context/AuthContext";
 import { useThemeContext } from "@/app/context/ThemeContext";
+import Header from "@/components/Header";
 import DropdownSetting from "@/components/settings/Dropdown";
 import { SettingsRow } from "@/components/settings/SettingsRow";
 import { SettingsSection } from "@/components/settings/SettingsSection";
@@ -65,12 +66,7 @@ export default function TabTwoScreen() {
 
   return (
     <SafeAreaView className="w-full flex-1">
-      <View className="p-2 flex-col gap-2 border-b border-gray-300 pb-4 mb-4 dark:border-gray-600">
-        <Text className="text-3xl font-bold">{t("settings.title")}</Text>
-        <Text className="text-base text-gray-600 dark:text-gray-400">
-          {t("settings.subtitle")}
-        </Text>
-      </View>
+      <Header title={t("settings.title")} subtitle={t("settings.subtitle")} />
       <View className="flex-col gap-4 px-4">
         <SettingsSection
           icon={<Smartphone size={24} color={"blue"} />}

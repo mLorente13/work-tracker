@@ -1,9 +1,10 @@
 import { useAuth } from "@/app/context/AuthContext";
 import { useWorkDay } from "@/app/context/WorkDayContext";
+import Header from "@/components/Header";
 import ActionBtn from "@/components/workday/ActionBtn";
 import WorkdayStatusText from "@/components/workday/WorkdayStatusText";
 import { supabase } from "@/lib/supabase";
-import { calcRestTime, calcWorkTime } from "@/lib/time-utils";
+import { calcRestTime, calcWorkTime, getGreeting } from "@/lib/time-utils";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
@@ -65,13 +66,22 @@ export default function Workday() {
   const { t } = useTranslation();
 
   return (
-    <SafeAreaView className="flex-1 items-center justify-center">
-      <Text className="text-2xl font-bold">
-        {t("workday.welcome", {
-          username: session?.user?.user_metadata?.username,
-        })}
-      </Text>
-      <View>
+    <SafeAreaView className="flex-1">
+      <Header
+        title={getGreeting()}
+        subtitle={
+          workDayStatus.status === "working" ||
+          workDayStatus.status === "resting"
+            ? t(`workday.status.${workDayStatus.status}`)
+            : t("workday.startDay")
+        }
+      />
+      <View className="flex-1 items-center justify-center">
+        <Text className="text-2xl font-bold">
+          {t("workday.welcome", {
+            username: session?.user?.user_metadata?.username,
+          })}
+        </Text>
         <WorkdayStatusText
           status={workDayStatus.status}
           startTime={workDayStatus.startTime}
